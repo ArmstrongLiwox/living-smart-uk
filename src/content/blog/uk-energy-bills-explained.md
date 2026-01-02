@@ -7,8 +7,6 @@ categories: ['uk-bills', 'energy', 'money-saving']
 tags: ['uk energy bill explained', 'understanding energy bills', 'energy bill breakdown', 'standing charge', 'unit rate', 'payment method', 'price cap', 'ofgem', 'save money', 'uk utilities', 'energy costs', 'direct debit', 'prepayment meter']
 author: '["Living Smart UK"]'
 ---
-9 minutes
----
 
 ## Your Energy Bill Has 3 Critical Lines—Most People Read Them Wrong
 
