@@ -1,8 +1,14 @@
 ---
+import Base from '@layouts/Base.astro';
+
 const { title } = Astro.props;
 ---
 
-<div class="prose-md prose prose-green min-w-full md:prose-lg">
-  <h1 class="text-3xl font-bold">{title}</h1>
-  <slot />
-</div>
+<Base title={title}>
+  <div class="container mx-auto max-w-4xl px-4 py-8">
+    <div class="prose-md prose prose-green min-w-full md:prose-lg">
+      <h1 class="text-3xl font-bold mb-8">{title}</h1>
+      <slot />
+    </div>
+  </div>
+</Base>
