@@ -1,0 +1,15 @@
+/* TEAM */
+	Chef: Armstrong Uzoagwa
+	Contact: https://livingsmart.liwox.net/
+	Twitter: @ArmStrongUzo
+	From: United Kingdom
+
+/* THANKS */
+	Template: EV0 Theme
+	GitHub: @ArmstrongLiwox
+
+/* SITE */
+	Last update: 2025/12/25
+	Language: English
+	Doctype: Astro
+	IDE: VSCode
