@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "LivinSmartUK ",
-    "base_url": "https://liwox.net",
+    "base_url": "https://livingsmart.liwox.net/",
     "base_path": "/",
     "favicon": "/favicon.png",
     "logoLight": "/logoLight.png",
@@ -15,7 +15,7 @@
     "dark_mode": true
   },
   "metadata": {
-    "meta_author": "Armstrong Uzoagwa @ArmstrongLiwox",
+    "meta_author": "@ArmstrongLiwox",
     "meta_description": "Armstrong Uzoagwa is the founder of LiwoxDotNet, a platform where Architecture, DevOps, and Forex converge to build scalable, future-ready systems."
   },
   "author": {
