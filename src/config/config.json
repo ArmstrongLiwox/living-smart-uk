@@ -1,13 +1,13 @@
 {
   "site": {
-    "title": "LivinSmartUK ",
-    "base_url": "https://livingsmart.liwox.net/",
+    "title": "EV0 ",
+    "base_url": "https://ev0.gndx.io",
     "base_path": "/",
     "favicon": "/favicon.png",
     "logoLight": "/logoLight.png",
     "logoDark": "/logoDark.png",
     "lang": "en",
-    "description": "Living Smart Uk is a helping hand through the UK terrain",
+    "description": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript.",
     "pageSize": 6
   },
   "features": {
@@ -15,12 +15,12 @@
     "dark_mode": true
   },
   "metadata": {
-    "meta_author": "@ArmstrongLiwox",
-    "meta_description": "Armstrong Uzoagwa is the founder of LiwoxDotNet, a platform where Architecture, DevOps, and Forex converge to build scalable, future-ready systems."
+    "meta_author": "Oscar Barajas @gndx",
+    "meta_description": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript."
   },
   "author": {
-    "name": "Armstrong Uzoagwa",
-    "avatar": "https://raw.githubusercontent.com/ArmstrongLiwox/livingsmart/main/livingsmart.png",
-    "bio": "Armstrong Uzoagwa is the founder of LiwoxDotNet, a platform where Architecture, DevOps, and Forex converge to build scalable, future-ready systems."
+    "name": "Oscar Barajas Tavares @gndx",
+    "avatar": "https://s3.amazonaws.com/gndx.dev/gndx-astro-avatar.png",
+    "bio": "EV0 is a free and open-source serverless blog template, built with Astro, Tailwind CSS, and TypeScript."
   }
 }
