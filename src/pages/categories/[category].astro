@@ -5,6 +5,7 @@ import { getTaxonomy } from '@utils/getAllTags';
 import { getSinglePage } from '@utils/getAllTags';
 import { taxonomyFilter } from '@utils/getAllTags';
 import { deslugify } from '@utils/slug';
+import config from '@config/config.json';
 
 export async function getStaticPaths() {
   const categories = await getTaxonomy('blog', 'categories');
@@ -17,23 +18,239 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.params;
-
 const posts = await getSinglePage('blog');
 const filterByCategory = taxonomyFilter(posts, 'categories', category);
+const { site } = config;
 ---
 
-<Base>
-  <h1 class="mb-8 text-2xl font-bold capitalize md:text-3xl">Category: {deslugify(category)}</h1>
-  <ul class="ml-4 space-y-4 text-left text-zinc-500 dark:text-zinc-400">
-    {
-      filterByCategory?.map((post) => (
-        <li class="flex items-center space-x-1">
-          <CategoryIcon />
-          <a href={`/blog/${post.slug}`} class="text-zinc-500 hover:text-zinc-800 dark:text-zinc-400">
-            {post.data.title}
+<Base 
+  meta_title={`${deslugify(category)} - Smart Home Category | LivingSmartUK`}
+  meta_description={`Browse ${deslugify(category)} articles on LivingSmartUK. Expert guides, tips, and solutions for smart home automation and IoT.`}
+>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Category Header -->
+    <div class="mb-10">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <nav class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400">Home</a>
+            <span>/</span>
+            <a href="/blog" class="hover:text-blue-600 dark:hover:text-blue-400">Blog</a>
+            <span>/</span>
+            <a href="/categories" class="hover:text-blue-600 dark:hover:text-blue-400">Categories</a>
+            <span>/</span>
+            <span class="font-medium text-blue-600 dark:text-blue-400">{deslugify(category)}</span>
+          </nav>
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">
+            <span class="text-blue-600 dark:text-blue-400">{deslugify(category)}</span> Articles
+          </h1>
+        </div>
+        <div class="hidden md:block">
+          <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-medium rounded-full">
+            {filterByCategory?.length || 0} Articles
+          </span>
+        </div>
+      </div>
+      
+      <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
+        Explore our comprehensive collection of articles about <strong>{deslugify(category)}</strong>. 
+        Find expert guides, tutorials, and insights for your smart home journey.
+      </p>
+    </div>
+
+    <!-- Category Description -->
+    <div class="mb-10 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl">
+      <div class="flex items-start">
+        <div class="flex-shrink-0 mr-4">
+          <CategoryIcon class="w-8 h-8 text-blue-600 dark:text-blue-400" />
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">
+            About {deslugify(category)}
+          </h2>
+          <p class="text-gray-700 dark:text-gray-300">
+            {category === 'home-automation' && 'Home automation simplifies daily tasks through smart technology. Learn about systems that control lighting, climate, security, and entertainment.'}
+            {category === 'iot-solutions' && 'IoT (Internet of Things) connects devices for smarter living. Discover how interconnected devices improve efficiency, security, and convenience.'}
+            {category === 'energy-efficiency' && 'Smart energy solutions reduce consumption and costs. Explore technologies that optimize energy use while maintaining comfort.'}
+            {category === 'smart-security' && 'Advanced security systems protect your home intelligently. Learn about surveillance, access control, and alarm systems.'}
+            {category === 'uk-smart-homes' && 'Smart home solutions tailored for UK homes. Understand regulations, climate considerations, and local best practices.'}
+            {!['home-automation', 'iot-solutions', 'energy-efficiency', 'smart-security', 'uk-smart-homes'].includes(category) && 
+              'Expert articles and guides about smart home technology and intelligent living solutions.'}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Articles Grid -->
+    {filterByCategory?.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {filterByCategory.map((post) => (
+          <article class="group bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+            <!-- Featured Image Placeholder -->
+            <div class="h-48 bg-gradient-to-r from-blue-500 to-indigo-600 relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <CategoryIcon class="w-16 h-16 text-white/30" />
+              </div>
+              <div class="absolute bottom-4 left-4">
+                <span class="px-3 py-1 bg-white/90 dark:bg-gray-900/90 text-blue-600 dark:text-blue-400 text-xs font-medium rounded-full">
+                  {deslugify(category)}
+                </span>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+                <time>
+                  {new Date(post.data.date || post.data.pubDate).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                  })}
+                </time>
+                <span class="mx-2">•</span>
+                {post.data.readingTime && (
+                  <span>{post.data.readingTime} min read</span>
+                )}
+              </div>
+              
+              <h3 class="mb-3">
+                <a 
+                  href={`/blog/${post.slug}`} 
+                  class="text-xl font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  {post.data.title}
+                </a>
+              </h3>
+              
+              <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                {post.data.description || post.data.excerpt || 'Discover smart home solutions and expert advice...'}
+              </p>
+              
+              <div class="flex items-center justify-between">
+                <a 
+                  href={`/blog/${post.slug}`} 
+                  class="inline-flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                >
+                  Read Article
+                  <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+                
+                {post.data.tags?.slice(0, 2).map((tag) => (
+                  <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
+                    {deslugify(tag)}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <!-- No Articles Found -->
+      <div class="text-center py-16">
+        <div class="mb-8">
+          <svg class="w-20 h-20 mx-auto text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-4">
+          No articles found in "{deslugify(category)}"
+        </h3>
+        <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
+          We're working on creating content for <strong>{deslugify(category)}</strong>. 
+          Check back soon or explore our other smart home categories.
+        </p>
+        <div class="space-x-4">
+          <a 
+            href="/categories" 
+            class="inline-flex items-center px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Browse All Categories
           </a>
-        </li>
-      ))
-    }
-  </ul>
+          <a 
+            href="/blog" 
+            class="inline-flex items-center px-5 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-lg transition-colors"
+          >
+            View Latest Articles
+          </a>
+        </div>
+      </div>
+    )}
+
+    <!-- Related Categories -->
+    {filterByCategory?.length > 0 && (
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+          Related Smart Home Categories
+        </h2>
+        <div class="flex flex-wrap gap-4">
+          {['home-automation', 'iot-solutions', 'energy-efficiency', 'smart-security'].map((relatedCat) => {
+            if (relatedCat !== category) {
+              return (
+                <a 
+                  href={`/categories/${relatedCat}`}
+                  class="px-5 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium transition-colors"
+                >
+                  {deslugify(relatedCat)}
+                </a>
+              );
+            }
+          })}
+        </div>
+      </div>
+    )}
+
+    <!-- Newsletter Subscription -->
+    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 md:p-10 text-white">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">
+          Master {deslugify(category)} with Our Newsletter
+        </h2>
+        <p class="text-blue-100 mb-8 text-lg">
+          Get exclusive content, tips, and updates about {deslugify(category).toLowerCase()} 
+          and other smart home technologies delivered to your inbox.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a
+            href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7365469390676410368"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 bg-white text-blue-600 hover:bg-blue-50 font-bold rounded-lg transition-colors"
+          >
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
+            </svg>
+            Follow on LinkedIn
+          </a>
+          <a
+            href="/contact"
+            class="inline-flex items-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg transition-colors border border-white/20"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Contact for Consultation
+          </a>
+        </div>
+        <p class="text-blue-200 text-sm mt-6">
+          Join our community of smart home enthusiasts in the UK
+        </p>
+      </div>
+    </div>
+
+    <!-- Back to Categories -->
+    <div class="mt-12 text-center">
+      <a 
+        href="/categories" 
+        class="inline-flex items-center px-5 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium rounded-lg transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to All Categories
+      </a>
+    </div>
+  </div>
 </Base>
