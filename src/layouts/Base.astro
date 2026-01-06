@@ -3,7 +3,6 @@ import Header from '@components/Header.astro';
 import Hero from '@components/Hero.astro';
 import FeaturedVideos from '@components/FeaturedVideos.astro';
 import Footer from '@components/Footer.astro';
-import GoogleAnalytics from '@components/GoogleAnalytics.astro';
 import config from '@config/config.json';
 import { createOgImage } from '@utils/createOgImage';
 
@@ -42,9 +41,6 @@ const ogImage = createOgImage({
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <!-- responsive meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-
-    <!-- Google Analytics for LivingSmart -->
-    {import.meta.env.PROD && <GoogleAnalytics />}
 
     <title>{meta_title ? meta_title : title ? title : config.site.title}</title>
     <meta name="title" content={meta_title ? meta_title : title ? title : config.site.title} />
